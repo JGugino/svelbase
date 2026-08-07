@@ -1,6 +1,6 @@
 {
   "name": "svelbase",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "A CLI tool for creating SvelteKit projects with Pocketbase intergrations such as auth.",
   "keywords": [
     "svelte",
@@ -15,7 +15,7 @@
   "license": "GPL-3.0-only",
   "type": "module",
   "bin": {
-    "svelbase": "./dist/index.js"
+    "svelbase": "./dist/index.mjs"
   },
   "files": [
     "dist"
@@ -31,7 +31,6 @@
     "tsdown": "^0.22.14",
     "typescript": "^7.0.2"
   },
-  "packageManager": "pnpm@11.18.0+sha512.33d83c77da82f49fba836925c6f1b841181ec3132b670639bd012f7075f5c7cf634c5f870147c19aae7478fac01df09d8892e880454896edd23ee9b33757563c",
   "dependencies": {
     "@clack/prompts": "^1.7.0",
     "commander": "^15.0.0",
