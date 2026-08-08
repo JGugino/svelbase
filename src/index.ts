@@ -12,7 +12,7 @@ program
   .name("svelbase")
   .description(
     "A CLI tool for creating Svelte projects with Pocketbase intergrations such as auth.",
-  )
+  ).version(process.version)
   .argument("[project-name]", "name of the project")
   .addOption(new Option("--ts, --typescript", "Use Typescript").default(true).conflicts(["--js", "--javascript"]))
   .addOption(new Option("--js, --javascript", "Use JavaScript").conflicts(["--ts", "--typescript"]))

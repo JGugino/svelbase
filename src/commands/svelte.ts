@@ -7,9 +7,12 @@ export interface ScaffoldOptions {
   useTailwind: boolean
 }
 
+const currentSVVersion = "0.17.0"
+const currentViteVersion = "8.2.1"
+
 export async function scaffoldSvelteProject(options: ScaffoldOptions) {
   const svelteKitArgs = [
-    "sv",
+    `sv@${currentSVVersion}`,
     "create",
     options.name,
     "--template",
@@ -25,7 +28,7 @@ export async function scaffoldSvelteProject(options: ScaffoldOptions) {
 
   const svelteArgs = [
     "create",
-    "vite",
+    `vite@${currentViteVersion}`,
     "--",
     "--template",
     `svelte${options.useTypescript ? "-ts" : ""}`,

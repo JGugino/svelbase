@@ -1,15 +1,18 @@
 {
   "name": "svelbase",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A CLI tool for creating SvelteKit projects with Pocketbase intergrations such as auth.",
   "keywords": [
     "svelte",
     "sveltekit",
     "pocketbase",
+    "docker",
     "auth",
     "generator",
     "cli",
-    "node"
+    "node",
+    "typescript",
+    "tailwind"
   ],
   "author": "guginosolutions",
   "license": "GPL-3.0-only",
@@ -18,7 +21,8 @@
     "svelbase": "./dist/index.mjs"
   },
   "files": [
-    "dist"
+    "dist",
+    "templates"
   ],
   "engines": {
     "node": ">=18"
