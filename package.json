@@ -1,6 +1,6 @@
 {
   "name": "svelbase",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A CLI tool for creating SvelteKit projects with Pocketbase intergrations such as auth.",
   "keywords": [
     "svelte",
