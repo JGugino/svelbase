@@ -46,12 +46,22 @@ export async function createProject(options: CreateOptions) {
       message: "Add Tailwind CSS?",
       initialValue: false
     })) as boolean)
+
+    if (prompt.isCancel(useTailwind)) {
+      prompt.cancel("Cancelled.")
+      process.exit(0)
+    }
   }
 
   const useDocker = options.docker || ((await prompt.confirm({
-    message: "Include a docker-compose for local",
+    message: "Include a docker-compose for local PocketBase?",
     initialValue: false
   })) as boolean)
+
+  if (prompt.isCancel(useDocker)) {
+    prompt.cancel("Cancelled.")
+    process.exit(0)
+  }
 
   const spinner = prompt.spinner();
 

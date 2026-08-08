@@ -8,27 +8,27 @@ export interface ScaffoldOptions {
 }
 
 const currentSVVersion = "0.17.0"
-const currentViteVersion = "8.2.1"
 
 export async function scaffoldSvelteProject(options: ScaffoldOptions) {
   const svelteKitArgs = [
     `sv@${currentSVVersion}`,
     "create",
-    options.name,
     "--template",
     "minimal",
     "--types",
     options.useTypescript ? "ts" : "none",
-    "--no-install"
+    "--no-install",
+    options.name
   ]
 
   if (options.useTailwind) {
-    svelteKitArgs.push("--add", 'tailwindcss=plugins:none')
+    svelteKitArgs.push("--add", 'tailwindcss="plugins:none"')
   }
 
   const svelteArgs = [
+    "-y",
     "create",
-    `vite@${currentViteVersion}`,
+    `vite`,
     "--",
     "--template",
     `svelte${options.useTypescript ? "-ts" : ""}`,
