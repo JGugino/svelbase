@@ -59,4 +59,5 @@ export async function createProject(options: CreateOptions) {
 
   spinner.stop(`${svelteType === "svelte" ? "Svelte" : "SvelteKit"} scaffolding complete.`)
 
+  //TODO: Add creation of docker file for pocketbase or download the correct executable.
 }

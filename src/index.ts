@@ -7,6 +7,7 @@ import { createProject } from "./commands/create";
 
 const program = new Command();
 
+//Setup base command with options
 program
   .name("svelbase")
   .description(
