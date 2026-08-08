@@ -1,0 +1,31 @@
+import PocketBase from 'pocketbase';
+import type { Handle } from '@sveltejs/kit';
+import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
+
+export const handle: Handle = async ({ event, resolve }) => {
+	//Create new PocketBase instance
+	event.locals.pb = new PocketBase(PUBLIC_POCKETBASE_URL);
+
+	// Load the store data from the request cookie string
+	const authCookie = event.cookies.get('auth');
+
+	if (authCookie) {
+		event.locals.pb.authStore.loadFromCookie(authCookie, 'auth');
+	}
+
+	try {
+		// Get an up-to-date auth store state by verifying and refreshing the loaded auth model (if any)
+		if (event.locals.pb.authStore.isValid) {
+			await event.locals.pb.collection('users').authRefresh();
+			event.cookies.set('auth', event.locals.pb.authStore.exportToCookie({}, 'auth'), {
+				path: '/'
+			});
+		}
+	} catch (e) {
+		// Clear the auth store on failed refresh
+		event.locals.pb.authStore.clear();
+	}
+
+	const response = await resolve(event);
+	return response;
+};

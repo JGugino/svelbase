@@ -1,6 +1,6 @@
 {
   "name": "svelbase",
-  "version": "1.1.0",
+  "version": "0.1.2",
   "description": "A CLI tool for creating SvelteKit projects with Pocketbase intergrations such as auth.",
   "keywords": [
     "svelte",
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@types/node": "^26.1.2",
+    "@types/unzipper": "^0.10.11",
     "tsdown": "^0.22.14",
     "typescript": "^7.0.2"
   },
@@ -38,6 +39,7 @@
     "execa": "^10.0.1",
     "picocolors": "^1.1.1",
     "sv": "^0.17.0",
+    "unzipper": "^0.12.5",
     "vite": "^8.2.1"
   }
 }

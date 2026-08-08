@@ -38,6 +38,4 @@ export async function scaffoldSvelteProject(options: ScaffoldOptions) {
   } else {
    await execa("npx", svelteKitArgs, {stdio: 'inherit'})
   }
-
-  //TODO: Copy contents of template files into newly created project
 }
