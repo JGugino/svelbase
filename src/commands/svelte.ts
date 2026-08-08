@@ -18,12 +18,13 @@ export async function scaffoldSvelteProject(options: ScaffoldOptions) {
     "--types",
     options.useTypescript ? "ts" : "none",
     "--no-install",
-    options.name
   ]
 
   if (options.useTailwind) {
-    svelteKitArgs.push("--add", 'tailwindcss="plugins:none"')
+    svelteKitArgs.push("--add", 'tailwindcss=plugins:none')
   }
+
+  svelteKitArgs.push(options.name)
 
   const svelteArgs = [
     "-y",

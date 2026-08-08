@@ -104,12 +104,12 @@ export async function createProject(options: CreateOptions) {
   await writeEnvFile(projectName)
   spinner.stop("Enviroment files created")
 
-  prompt.outro(`${picocolors.greenBright("Done!")} Next Steps: \n\n` +
-              `cd ${projectName}\n` +
-              `npm install pocketbase --save\n` +
-              `npm install\n` +
-              (useDocker ? `docker compose up -d ${picocolors.dim("# starts PocketBase")}\n` : `./pocketbase serve ${picocolors.dim("# in a separate terminal")}\n`) +
-              'npm run dev'
-  )
+  prompt.note(`Next Steps: \n\n` +
+              `- cd ${projectName}\n` +
+              `- npm install pocketbase --save\n` +
+              `- npm install\n` +
+              (useDocker ? `- docker compose up -d ${picocolors.dim("# starts PocketBase")}\n` : `- ./pocketbase serve ${picocolors.dim("# in a separate terminal")}\n`) +
+              '- npm run dev',picocolors.greenBright("Setup Complete!"))
 
+  prompt.outro("Thank you for using svelbase, don't forget to star us on GitHub!")
 }
