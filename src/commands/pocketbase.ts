@@ -1,11 +1,12 @@
 import { copyFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import os from "node:os";
+// import os from "node:os";
 import { execa } from "execa";
-import { spinner } from "@clack/prompts";
+// import { spinner } from "@clack/prompts";
 import fs from "node:fs";
-import unzipper from "unzipper";
+// import unzipper from "unzipper";
+import { errorNote } from "../prompt-helper";
 
 export interface PocketBaseOptions {
   name: string;
@@ -27,26 +28,41 @@ export async function setupPocketBase(
 
   if (svleteType === "svelte") {
     //INFO: Copy pocketbase client
-    await copyFile(
-      path.join(templatesDirectory, "pb-client.ts.tmpl"),
-      path.join(libDir, "pocketbase.ts"),
-    );
+    try {
+      await copyFile(
+        path.join(templatesDirectory, "pb-client.ts.tmpl"),
+        path.join(libDir, "pocketbase.ts"),
+      );
+    } catch (err) {
+      errorNote("pocketbase.ts failed to copied")
+    }
+
   }
 
   if (svleteType === "sveltekit") {
-    //INFO: Copy hooks
-    await copyFile(
-      path.join(templatesDirectory, "hooks.server.ts.tmpl"),
-      path.join(options.name, "src", "hooks.server.ts"),
-    );
+    try {
+      //INFO: Copy hooks
+      await copyFile(
+        path.join(templatesDirectory, "hooks.server.ts.tmpl"),
+        path.join(options.name, "src", "hooks.server.ts"),
+      );
+    } catch (err) {
+      errorNote("hooks.server.ts failed to copied")
+    }
+
   }
 
   if (options.useDocker) {
-    //INFO: Copy docker-compose
-    await copyFile(
-      path.join(templatesDirectory, "docker-compose.yml"),
-      path.join(options.name, "docker-compose.yml"),
-    );
+    try {
+      //INFO: Copy docker-compose
+      await copyFile(
+        path.join(templatesDirectory, "docker-compose.yml"),
+        path.join(options.name, "docker-compose.yml"),
+      );
+    } catch (err) {
+      errorNote("docker-compose.yml failed to copied")
+    }
+
   } else {
 
     //TODO: Fix downloading of correct pb version of os, and extracting zip

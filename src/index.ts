@@ -4,6 +4,7 @@ import { Command, Option } from "commander";
 import * as prompt from "@clack/prompts";
 import picocolors from "picocolors";
 import { createProject } from "./commands/create";
+import { cancelNote } from "./prompt-helper";
 
 const program = new Command();
 
@@ -30,7 +31,8 @@ program
         docker: Boolean(opts.docker)
       })
     } catch (err) {
-      prompt.cancel(err instanceof Error ? err.message : "Something went wrong")
+      cancelNote(err instanceof Error ? err.message : "Something went wrong")
+      prompt.cancel()
       process.exit(1)
     }
 

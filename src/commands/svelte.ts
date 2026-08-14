@@ -1,4 +1,7 @@
-import { execa } from "execa"
+import * as prompt from "@clack/prompts";
+import { execa, ExecaError } from "execa"
+import picocolors from "picocolors";
+import { errorNote } from "../prompt-helper";
 
 export interface ScaffoldOptions {
   name: string,
@@ -7,11 +10,10 @@ export interface ScaffoldOptions {
   useTailwind: boolean
 }
 
-const currentSVVersion = "0.17.0"
-
 export async function scaffoldSvelteProject(options: ScaffoldOptions) {
   const svelteKitArgs = [
-    `sv@${currentSVVersion}`,
+    "-y",
+    `sv`,
     "create",
     "--template",
     "minimal",
@@ -37,8 +39,25 @@ export async function scaffoldSvelteProject(options: ScaffoldOptions) {
   ]
 
   if (options.type === "svelte") {
-   await execa("npm", svelteArgs, {stdio: 'inherit'})
+    try {
+      await execa("npm", svelteArgs, {stdio: 'inherit'})
+    } catch (err) {
+      if (err == typeof ExecaError) {
+        const execaError: ExecaError = err as ExecaError
+        errorNote(execaError.message)
+        process.exit(1)
+      }
+    }
+
   } else {
-   await execa("npx", svelteKitArgs, {stdio: 'inherit'})
+    try {
+      await execa("npx", svelteKitArgs, {stdio: 'inherit'})
+    } catch (err) {
+      if (err == typeof ExecaError) {
+        const execaError: ExecaError = err as ExecaError
+        errorNote(execaError.message)
+        process.exit(1)
+      }
+    }
   }
 }

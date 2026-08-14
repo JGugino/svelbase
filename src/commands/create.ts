@@ -3,7 +3,8 @@ import picocolors from "picocolors";
 import { scaffoldSvelteProject } from "./svelte";
 import { setupPocketBase } from "./pocketbase";
 import { writeEnvFile } from "./env";
-import { execa } from "execa";
+import { cancelNote } from "../prompt-helper";
+// import { execa } from "execa";
 
 export interface CreateOptions {
   name: string | undefined;
@@ -27,7 +28,8 @@ export async function createProject(options: CreateOptions) {
     })) as string);
 
   if (prompt.isCancel(projectName)) {
-    prompt.cancel("Cancelled.")
+    cancelNote("Creation cancelled")
+    prompt.cancel()
     process.exit(0)
   }
 
@@ -39,6 +41,12 @@ export async function createProject(options: CreateOptions) {
     ],
   });
 
+  if (prompt.isCancel(svelteType)) {
+    cancelNote("Creation cancelled")
+    prompt.cancel()
+    process.exit(0)
+  }
+
   let useTailwind: boolean = false
 
   if (svelteType === "sveltekit") {
@@ -48,7 +56,8 @@ export async function createProject(options: CreateOptions) {
     })) as boolean)
 
     if (prompt.isCancel(useTailwind)) {
-      prompt.cancel("Cancelled.")
+      cancelNote("Creation cancelled")
+      prompt.cancel()
       process.exit(0)
     }
   }
@@ -59,7 +68,8 @@ export async function createProject(options: CreateOptions) {
   })) as boolean)
 
   if (prompt.isCancel(useDocker)) {
-    prompt.cancel("Cancelled.")
+    cancelNote("Creation cancelled")
+    prompt.cancel()
     process.exit(0)
   }
 
