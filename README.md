@@ -1,30 +1,30 @@
-# svelbase
+# [sv](https://svelte.dev/docs/cli/overview) community add-on: [@svelbase/svelbase](https://github.com/@svelbase/svelbase)
 
-Scaffold a SvelteKit + PocketBase project in one command.
+> [!IMPORTANT]
+> Svelte maintainers have not reviewed community add-ons for malicious code! Use at your discretion.
 
 ## Usage
 
-```bash
-npx svelbase my-app
+To install the add-on, run:
+
+```shell
+npx sv add @svelbase/sv
 ```
 
-You'll be prompted for Svelte(w/ Vite)/SvelteKit, TypeScript/JavaScript, Tailwind CSS, and whether to run PocketBase via Docker. svelbase then:
+## What you get
 
-- Scaffolds SvelteKit using `sv create`
-- Adds a typed PocketBase client at `src/lib/pocketbase.ts`
-- Wires up cookie-based SSR auth in `src/hooks.server.ts`
-- Writes `.env` / `.env.example` with `PUBLIC_POCKETBASE_URL`
-- Optionally adds a `docker-compose.yml` for local PocketBase
+- One command execution
+- Pocketbase Integration
+- Add to new or old projects
 
-## Local development
+## Options
 
-```bash
-npm install
-npm run dev     # watch mode via tsdown
-npm link        # test the `svelbase` command locally
+### `who`
+
+The name of the person to say hello to.
+
+Default: `you`
+
+```shell
+npx sv add @svelbase/sv="who:your-name"
 ```
-
-
-## License
-
-GPL-3.0

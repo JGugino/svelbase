@@ -1,49 +1,46 @@
 {
-  "name": "svelbase",
-  "version": "0.1.7",
-  "description": "A CLI tool for creating SvelteKit projects with Pocketbase intergrations such as auth.",
-  "keywords": [
-    "svelte",
-    "sveltekit",
-    "pocketbase",
-    "docker",
-    "auth",
-    "generator",
-    "cli",
-    "node",
-    "typescript",
-    "tailwind"
-  ],
-  "author": "guginosolutions",
-  "license": "GPL-3.0-only",
-  "type": "module",
-  "bin": {
-    "svelbase": "./dist/index.mjs"
-  },
-  "files": [
-    "dist",
-    "templates"
-  ],
-  "engines": {
-    "node": ">=18"
-  },
-  "scripts": {
-    "build": "tsdown src/index.ts --format esm --clean",
-    "dev": "tsdown src/index.ts --format esm --watch"
-  },
-  "devDependencies": {
-    "@types/node": "^26.1.2",
-    "@types/unzipper": "^0.10.11",
-    "tsdown": "^0.22.14",
-    "typescript": "^7.0.2"
-  },
-  "dependencies": {
-    "@clack/prompts": "^1.7.0",
-    "commander": "^15.0.0",
-    "execa": "^10.0.1",
-    "picocolors": "^1.1.1",
-    "svelbase": "link:",
-    "unzipper": "^0.12.5"
-  },
-  "packageManager": "pnpm@11.21.0+sha512.521705bce689924eac72f5a3587122f362689ef6571e55ba80076fd637c11132ecffada26fad4ea79c485bfddbfd3d5a2a5b05805a77e893de71ec8a6cca3bb1"
+	"name": "@svelbase/sv",
+	"description": "sv add-on for @svelbase/sv",
+	"version": "0.0.1",
+	"type": "module",
+	"license": "GPL-3.0-only",
+	"scripts": {
+		"demo-create": "sv create demo --types ts --template minimal --no-add-ons --no-install",
+		"demo-add": "pnpm build && sv add file:../ --cwd demo --no-git-check --no-install",
+		"demo-add:ci": "pnpm build && sv add file:../=who:you --cwd demo --no-git-check --no-download-check --no-install",
+		"build": "tsdown",
+		"dev": "tsdown src/index.ts --format esm --watch",
+		"prepublishOnly": "npm run build",
+		"test": "vitest run"
+	},
+	"files": [
+		"dist"
+	],
+	"exports": {
+		".": {
+			"default": "./dist/index.mjs"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"sv": "^0.17.0"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.60.0",
+		"@sveltejs/sv-utils": "^0.3.3",
+		"@types/node": "^25.9.1",
+		"sv": "^0.17.0",
+		"tsdown": "^0.22.1",
+		"typescript": "^7.0.2",
+		"vitest": "^4.1.8"
+	},
+	"keywords": [
+		"sv-add",
+		"svelte",
+		"sveltekit",
+		"pocketbase",
+		"auth"
+	]
 }

@@ -1,2 +1,2 @@
-overrides:
-  svelbase: 'link:'
+allowBuilds:
+  esbuild: true
