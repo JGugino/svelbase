@@ -2,10 +2,14 @@ import { defineAddon, defineAddonOptions } from 'sv';
 import { transforms } from './sv-utils.js';
 
 const options = defineAddonOptions()
-	.add('who', {
-		question: 'To whom should the addon say hello?',
-		type: 'string',
-		default: ''
+	.add('pocketbase', {
+		question: 'Docker or Local binary?',
+		type: 'select',
+    default: "docker",
+    options: [
+      {label: "Docker", value: "docker", hint: "Use a docker-compose for pb"},
+      {label: "Local", value: "local", hint: "Download pocketbase binary"}
+		]
 	})
 	.build();
 
@@ -18,36 +22,6 @@ export default defineAddon({
 	},
 
 	run: ({ directory, sv, options, language }) => {
-		sv.file(
-			`${directory.lib}/@svelbase/svelbase/content.txt`,
-			transforms.text(() => {
-				return `This is a text file made by the Community Addon Template demo for the add-on: '@svelbase/svelbase'!`;
-			})
-		);
 
-		sv.file(
-			`${directory.lib}/@svelbase/svelbase/HelloComponent.svelte`,
-			transforms.svelteScript({ language }, ({ ast, svelte, js }) => {
-				js.imports.addDefault(ast.instance.content, {
-					as: 'content',
-					from: './content.txt?raw'
-				});
-
-				svelte.addFragment(ast, '<p>{content}</p>');
-				svelte.addFragment(ast, `<h2>Hello ${options.who}!</h2>`);
-			})
-		);
-
-		sv.file(
-			directory.kitRoutes + '/+page.svelte',
-			transforms.svelteScript({ language }, ({ ast, svelte, js }) => {
-				js.imports.addDefault(ast.instance.content, {
-					as: 'HelloComponent',
-					from: `$lib/@svelbase/svelbase/HelloComponent.svelte`
-				});
-
-				svelte.addFragment(ast, '<HelloComponent />');
-			})
-		);
 	}
 });
