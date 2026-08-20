@@ -1,5 +1,6 @@
 import { defineAddon, defineAddonOptions } from 'sv';
 import { transforms } from './sv-utils.js';
+import path from 'node:path';
 
 const options = defineAddonOptions()
 	.add('pocketbase', {
@@ -17,11 +18,14 @@ export default defineAddon({
 	id: '@svelbase/svelbase',
 	options,
 
-	setup: ({ isKit, unsupported }) => {
+	setup: ({ isKit, unsupported, dependsOn, runsAfter }) => {
 		if (!isKit) unsupported('Requires SvelteKit');
+		dependsOn('eslint')
 	},
 
-	run: ({ directory, sv, options, language }) => {
-
+	run: ({ directory, sv, options, cancel, file }) => {
+    sv.file(path.join(directory.src), (content) => {
+      return ""
+			})
 	}
 });
