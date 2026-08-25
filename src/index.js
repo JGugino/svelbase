@@ -82,8 +82,12 @@ export default defineAddon({
 
     //INFO: Docker vs Local binary
     const dockerOverwrite = /**@type {boolean}*/(options.dockerOverwrite)
-    options.pb === "docker" ? writeDockerCompose(sv, dockerOverwrite) : downloadPocketBaseBinary(cancel)
 
+    if (options.pb === "docker") {
+      writeDockerCompose(sv, dockerOverwrite)
+    } else if (options.pb === "local") {
+      downloadPocketBaseBinary(cancel)
+    }
   },
   nextSteps: ({ options, cwd, packageManager }) => {
     const pkgJson = loadPackageJson(cwd)

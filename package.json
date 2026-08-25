@@ -8,7 +8,7 @@
 		"demo-create": "sv create demo --types ts --template minimal --no-add-ons --no-install",
 		"demo-add": "pnpm build && sv add file:../ --cwd demo --no-git-check --no-install",
 		"demo-add:ci": "pnpm build && sv add file:../=pb:local --cwd demo --no-git-check --no-download-check --no-install",
-		"build": "tsdown --unbundle",
+		"build": "tsdown",
 		"dev": "tsdown src/index.ts --format esm --watch",
 		"prepublishOnly": "npm run build",
 		"test": "vitest run"
