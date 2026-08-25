@@ -13,5 +13,5 @@ const COMPOSE_TEMPLATE = `services:
  * @param {import("sv").SvApi} sv
  */
 export async function writeDockerCompose(sv) {
-	sv.file('docker-compose.yml', () => COMPOSE_TEMPLATE);
+  sv.file('docker-compose.yml', () => COMPOSE_TEMPLATE);
 }

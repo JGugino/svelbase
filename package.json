@@ -1,13 +1,13 @@
 {
 	"name": "@svelbase/sv",
-	"description": "sv add-on for @svelbase/sv",
-	"version": "0.0.1",
+	"description": "@svelbase/sv is an addon for generating SvelteKit projects with PocketBase integrations",
+	"version": "0.1.4",
 	"type": "module",
 	"license": "GPL-3.0-only",
 	"scripts": {
 		"demo-create": "sv create demo --types ts --template minimal --no-add-ons --no-install",
 		"demo-add": "pnpm build && sv add file:../ --cwd demo --no-git-check --no-install",
-		"demo-add:ci": "pnpm build && sv add file:../=who:you --cwd demo --no-git-check --no-download-check --no-install",
+		"demo-add:ci": "pnpm build && sv add file:../=pb:local --cwd demo --no-git-check --no-download-check --no-install",
 		"build": "tsdown",
 		"dev": "tsdown src/index.ts --format esm --watch",
 		"prepublishOnly": "npm run build",

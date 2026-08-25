@@ -31,4 +31,5 @@ export async function writePocketBaseClient(sv) {
 	// whether to skip, prompt, or overwrite.
 
 	sv.file('src/lib/pocketbase.js', () => CLIENT_TEMPLATE);
+
 }

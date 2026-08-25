@@ -42,26 +42,25 @@ export const handle: Handle = async ({ event, resolve }) => {
  * @param {requestCancel} cancel
  */
 export async function writeAuthHooks(sv, cancel) {
-	// TODO: this existence check is pseudocode — depends on what sv actually
-	// exposes for "does this file exist / read current content" (possibly
-	// sv.file's callback receives current content as an argument, similar
-	// to the transform() pattern mentioned in the docs for AST-based edits).
-	// Two real options once that's confirmed:
-	//   1. If empty/missing: write HOOKS_TEMPLATE directly.
-	//   2. If non-empty: attempt to detect a `handle` export and either
-	//      merge (wrap the existing handle in sequence()) or cancel() with
-	//      a clear message telling the user to wire it in manually.
-	// Stubbing the "safe" path only for this rough draft:
+  // TODO: this existence check is pseudocode — depends on what sv actually
+  // exposes for "does this file exist / read current content" (possibly
+  // sv.file's callback receives current content as an argument, similar
+  // to the transform() pattern mentioned in the docs for AST-based edits).
+  // Two real options once that's confirmed:
+  //   1. If empty/missing: write HOOKS_TEMPLATE directly.
+  //   2. If non-empty: attempt to detect a `handle` export and either
+  //      merge (wrap the existing handle in sequence()) or cancel() with
+  //      a clear message telling the user to wire it in manually.
+  // Stubbing the "safe" path only for this rough draft:
 
-
-	sv.file('src/hooks.server.ts', (/** @type {String} */ existingContent) => {
-		if (existingContent && existingContent.trim().length > 0) {
-			// Bail out rather than risk clobbering another add-on's hooks.
-			cancel(
-				'src/hooks.server.ts already exists. Please wire up PocketBase auth manually — see the svelbase README for the snippet to add.'
-			);
-			return existingContent; // no-op if cancel() doesn't throw immediately
-		}
-		return HOOKS_TEMPLATE;
-	});
+  sv.file("src/hooks.server.js", (/** @type {String} */ existingContent) => {
+    if (existingContent && existingContent.trim().length > 0) {
+      // Bail out rather than risk clobbering another add-on's hooks.
+      cancel(
+        "src/hooks.server.js already exists. Please wire up PocketBase auth manually — see the svelbase README for the snippet to add.",
+      );
+      return existingContent; // no-op if cancel() doesn't throw immediately
+    }
+    return HOOKS_TEMPLATE;
+  });
 }
