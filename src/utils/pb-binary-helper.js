@@ -5,7 +5,7 @@ import AdmZip from 'adm-zip';
 
 
 
-const POCKETBASE_VERSION = '0.39.11';
+const POCKETBASE_VERSION = '0.40.1';
 
 function resolveAssetName() {
 	const platform = process.platform; // 'darwin' | 'linux' | 'win32'

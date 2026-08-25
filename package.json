@@ -1,7 +1,7 @@
 {
 	"name": "@svelbase/sv",
 	"description": "@svelbase/sv is an addon for generating SvelteKit projects with PocketBase integrations",
-	"version": "0.1.4",
+	"version": "0.2.0",
 	"type": "module",
 	"license": "GPL-3.0-only",
 	"scripts": {

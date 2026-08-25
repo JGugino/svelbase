@@ -1,18 +1,32 @@
-const ENV_LINE = 'PUBLIC_POCKETBASE_URL=http://127.0.0.1:8090\n';
+const ENV_LINE = "PUBLIC_POCKETBASE_URL=http://127.0.0.1:8090\n";
 
 /**
  *
  * @param {import("sv").SvApi} sv
+ * @param {boolean} overwrite
  */
-export async function writeEnvFiles(sv) {
-	// TODO: merge rather than overwrite if .env already has content —
-	// other add-ons (databases, auth providers) commonly write env vars
-	// too. For this draft, naive append-if-missing:
-	sv.file('.env', (existing) =>
-		existing.includes('PUBLIC_POCKETBASE_URL') ? existing : existing + ENV_LINE
-	);
+export async function writeEnvFiles(sv, overwrite) {
+  sv.file(".env", (existing) => {
+    if (existing && existing.trim().length > 0) {
+      if (!overwrite) {
+        if (existing.includes("PUBLIC_POCKETBASE_URL")) {
+          return existing;
+        }
+        return existing + ENV_LINE;
+      }
+    }
+    return ENV_LINE;
+  });
 
-	sv.file('.env.example', (existing) =>
-		existing.includes('PUBLIC_POCKETBASE_URL') ? existing : existing + ENV_LINE
-	);
+  sv.file(".env.example", (existing) => {
+    if (existing && existing.trim().length > 0) {
+      if (!overwrite) {
+        if (existing.includes("PUBLIC_POCKETBASE_URL")) {
+          return existing;
+        }
+        return existing + ENV_LINE;
+      }
+    }
+    return ENV_LINE;
+  });
 }

@@ -7,12 +7,11 @@ const LOGIN_UI_TEMPLATE = `
       <button type="submit">Login</button>
     </form>
   </div>
-  `
+  `;
 const LOGIN_ACTION_TEMPLATE = `
-  import type { Actions } from '@sveltejs/kit';
   import { json, redirect } from '@sveltejs/kit';
 
-  export const actions: Actions = {
+  export const actions = {
 	login: async ({ request, locals, cookies }) => {
 		const data = await request.formData();
 
@@ -28,17 +27,17 @@ const LOGIN_ACTION_TEMPLATE = `
 		if (loggedIn) {
 			cookies.set('auth', locals.pb.authStore.exportToCookie({}, 'auth'), { path: '/' });
 
-			return redirect(303, '/dashboard');
+			return redirect(303, '/');
 		}
 
 		return {
 			status: 'error',
 			code: 'user-login-failed',
-			msg: 'Something went wrong while loggin in the user'
+			msg: 'Something went wrong while logging in the user'
 		};
 	}
   };
-  `
+  `;
 const REGISTER_UI_TEMPLATE = `
   <div id="account-register">
     <h2>Register</h2>
@@ -50,15 +49,13 @@ const REGISTER_UI_TEMPLATE = `
       <button type="submit">Register</button>
     </form>
   </div>
-  `
+  `;
 
 const REGISTER_ACTION_TEMPLATE = `
-  import { CustomReqestType } from '$lib/scripts/pb/request.enums';
-  import { type CustomPBRequestInfo, type UserCreateInfo } from '$lib/scripts/pb/requests.types.js';
   import { json } from '@sveltejs/kit';
 
   export const actions = {
-	default: async (event) => {
+	register: async (event, locals) => {
 		const data = await event.request.formData();
 
 		const name = data.get('register-name')?.toString();
@@ -70,30 +67,16 @@ const REGISTER_ACTION_TEMPLATE = `
 			return json({ status: 'error', code: 'invalid-request', msg: 'Invalid form request' });
 		}
 
-		const requestInfo: CustomPBRequestInfo = {
-			requestType: CustomReqestType.USER_CREATE,
-			subRequestType: null,
-			data: {
-				name,
-				email,
-				password,
-				passwordConfirm,
-				role: 'admin'
-			} as UserCreateInfo
-		};
+		const regData = {
+			name,
+			email,
+			password,
+			passwordConfirm,
+		}
 
-		const res = await event.fetch('/api/maintenance/crud', {
-			method: 'POST',
-			body: JSON.stringify({
-				requestInfo
-			})
-		});
+		const created = await locals.pb.collection('users').create(regData)
 
-		const resJson = await res.json();
-
-		console.log(resJson);
-
-		if (resJson.success) {
+		if (created) {
 			return {
 				success: true
 			};
@@ -103,18 +86,42 @@ const REGISTER_ACTION_TEMPLATE = `
 			success: false
 		};
 	}
-  };  `
+  };  `;
 
 /**
  *
  * @param {import("sv").SvApi} sv
  */
 export function writeAuthUi(sv) {
-//INFO: Create login pages for ui and form action
- sv.file("src/routes/login/+page.svelte", () => LOGIN_UI_TEMPLATE)
- sv.file("src/routes/login/+page.server.svelte", () => LOGIN_ACTION_TEMPLATE)
+  //INFO: Create login pages for ui and form action
+  sv.file("src/routes/login/+page.svelte", (existing) => {
+    if (existing && existing.trim().length > 0) {
+      return existing;
+    }
+
+    return LOGIN_UI_TEMPLATE;
+  });
+  sv.file("src/routes/login/+page.server.js", (existing) => {
+    if (existing && existing.trim().length > 0) {
+      return existing;
+    }
+
+    return LOGIN_ACTION_TEMPLATE;
+  });
 
   //INFO: Create register pages for ui and form action
- sv.file("src/routes/register/+page.svelte", () => REGISTER_UI_TEMPLATE)
- sv.file("src/routes/register/+page.server.svelte", () => REGISTER_ACTION_TEMPLATE)
+  sv.file("src/routes/register/+page.svelte", (existing) => {
+    if (existing && existing.trim().length > 0) {
+      return existing;
+    }
+
+    return REGISTER_UI_TEMPLATE;
+  });
+  sv.file("src/routes/register/+page.server.js", (existing) => {
+    if (existing && existing.trim().length > 0) {
+      return existing;
+    }
+
+    return REGISTER_ACTION_TEMPLATE;
+  });
 }

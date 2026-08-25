@@ -23,8 +23,9 @@ export function createPocketBase(cookie) {
 /**
  *
  * @param {import("sv").SvApi} sv
+ * @param {boolean} overwrite
  */
-export async function writePocketBaseClient(sv) {
+export async function writePocketBaseClient(sv, overwrite) {
 	// TODO: confirm whether sv.file overwrites unconditionally or expects
 	// the caller to check existence first. If a project already has
 	// src/lib/pocketbase.ts (e.g. from re-running the add-on), decide

@@ -19,7 +19,7 @@ export default defineAddon({
 
     //INFO: Check for existing pocketbase client
     if (fileExists(cwd, path.join(directory.lib, "pocketbase.js"))) {
-      addOption("client-overwrite", {
+      addOption("clientOverwrite", {
         question: "Do you want to overwrite the existing pocketbase client?",
         type: "boolean",
         default: false
@@ -28,7 +28,7 @@ export default defineAddon({
 
     //INFO: Checks for existing server hooks
     if (fileExists(cwd, path.join(directory.src, "hooks.server.js"))) {
-      addOption("hooks-overwrite", {
+      addOption("hooksOverwrite", {
         question: "Do you want to overwrite the existing server hooks.server.js?",
         type: "boolean",
         default: false
@@ -37,7 +37,7 @@ export default defineAddon({
 
     //INFO: Checks for existing .env
     if (fileExists(cwd, ".env")) {
-      addOption("env-overwrite", {
+      addOption("envOverwrite", {
         question: "Do you want to overwrite the existing .env?",
         type: "boolean",
         default: false
@@ -46,7 +46,7 @@ export default defineAddon({
 
     //INFO: Checks for existing .env
     if (fileExists(cwd, "docker-compose.yml")) {
-      addOption("docker-overwrite", {
+      addOption("dockerOverwrite", {
         question: "Do you want to overwrite the existing docker-compose.yml?",
         type: "boolean",
         default: false
@@ -59,13 +59,17 @@ export default defineAddon({
     sv.dependency("pocketbase", "^0.28.0");
 
     //INFO: Unzipper used for unzipping the downloaded pocketbase binary
-    sv.dependency("adm-zip", "^0.6.0")
+    // sv.devDependency("adm-zip", "^0.6.0")
 
     //INFO: Typed client wrapper - src/lib/pocketbase.ts
-    writePocketBaseClient(sv)
+    const clientOverwrite = /**@type {boolean}*/(options.clientOverwrite)
+
+    writePocketBaseClient(sv, clientOverwrite)
 
     //INFO: Auth hooks - src/hooks.server.ts
-    writeAuthHooks(sv, cancel)
+    const hooksOverwrite = /**@type {boolean}*/(options.hooksOverwrite)
+
+    writeAuthHooks(sv, cancel, hooksOverwrite)
 
     //INFO: Auth UI - src/routes/login & src/routes/register
     if (options.authUi) {
@@ -73,22 +77,24 @@ export default defineAddon({
     }
 
     //INFO: .env / .env.example
-    writeEnvFiles(sv)
+    const envOverwrite = /**@type {boolean}*/(options.envOverwrite)
+    writeEnvFiles(sv, envOverwrite)
 
     //INFO: Docker vs Local binary
-    options.pocketbase === "docker" ? writeDockerCompose(sv) : downloadPocketBaseBinary(cancel)
+    const dockerOverwrite = /**@type {boolean}*/(options.dockerOverwrite)
+    options.pb === "docker" ? writeDockerCompose(sv, dockerOverwrite) : downloadPocketBaseBinary(cancel)
 
   },
-  nextSteps: ({ options, cwd }) => {
+  nextSteps: ({ options, cwd, packageManager }) => {
     const pkgJson = loadPackageJson(cwd)
 
-    const steps = [`cd ${pkgJson.data.name}/`,"Run `(p)npm install` if you haven't already"];
+    const steps = [`Run '${packageManager} install' if you haven't already`];
     steps.push(
-      options.pocketbase === "docker"
+      options.pb === "docker"
         ? "Run `docker compose up -d` to start PocketBase"
-        : "Run `./pocketbase serve` from a seperate terminal.",
+        : "Run `./pb/pocketbase serve` from a seperate terminal.",
     );
-    steps.push("Run `(p)npm run dev` to start your app")
+    steps.push(`Run '${packageManager} run dev' to start your app`)
     return steps;
   },
 });

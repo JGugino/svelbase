@@ -1,10 +1,9 @@
 const HOOKS_TEMPLATE = `import PocketBase from 'pocketbase';
-import type { Handle } from '@sveltejs/kit';
-import { PB_URL } from '$env/static/private';
+import { env } from '$env/dynamic/public';
 
-export const handle: Handle = async ({ event, resolve }) => {
+export const handle = async ({ event, resolve }) => {
 	//Create new PocketBase instance
-	event.locals.pb = new PocketBase(PB_URL);
+	event.locals.pb = new PocketBase(env.PUBLIC_POCKETBASE_URL);
 
 	// Load the store data from the request cookie string
 	const authCookie = event.cookies.get('auth');
@@ -40,26 +39,24 @@ export const handle: Handle = async ({ event, resolve }) => {
  *
  * @param {import("sv").SvApi} sv
  * @param {requestCancel} cancel
+ * @param {boolean} overwrite
  */
-export async function writeAuthHooks(sv, cancel) {
-  // TODO: this existence check is pseudocode — depends on what sv actually
-  // exposes for "does this file exist / read current content" (possibly
-  // sv.file's callback receives current content as an argument, similar
-  // to the transform() pattern mentioned in the docs for AST-based edits).
-  // Two real options once that's confirmed:
-  //   1. If empty/missing: write HOOKS_TEMPLATE directly.
-  //   2. If non-empty: attempt to detect a `handle` export and either
-  //      merge (wrap the existing handle in sequence()) or cancel() with
-  //      a clear message telling the user to wire it in manually.
-  // Stubbing the "safe" path only for this rough draft:
-
+export async function writeAuthHooks(sv, cancel, overwrite) {
   sv.file("src/hooks.server.js", (/** @type {String} */ existingContent) => {
+
+    //INFO: Check for existing content inside the hooks.server.js
     if (existingContent && existingContent.trim().length > 0) {
-      // Bail out rather than risk clobbering another add-on's hooks.
-      cancel(
-        "src/hooks.server.js already exists. Please wire up PocketBase auth manually — see the svelbase README for the snippet to add.",
-      );
-      return existingContent; // no-op if cancel() doesn't throw immediately
+
+      //INFO: Cancel
+      if (!overwrite) {
+        //TODO: Find better solution for outputing custom messages to the cli
+        console.log(`Overwrite hooks.server.js: ${overwrite ? "yes" : "no"} | Skipping hooks.server.js`)
+        // cancel(
+        //   "src/hooks.server.js already exists. Please add PocketBase auth manually to the hooks.server.js file — see the svelbase wiki for the snippet to add.",
+        // );
+        return existingContent; // no-op if cancel() doesn't throw immediately
+      }
+      return HOOKS_TEMPLATE
     }
     return HOOKS_TEMPLATE;
   });
