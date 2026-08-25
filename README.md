@@ -21,7 +21,7 @@ npx sv add @svelbase/sv
 Or include it when **creating** a new one:
 
 ```shell
-npx sv create --add @svelbase/sv my-app
+npx sv create my-app --add @svelbase/sv
 ```
 
 ## What you get
