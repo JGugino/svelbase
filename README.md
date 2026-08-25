@@ -3,7 +3,7 @@
 **A [sv](https://svelte.dev/docs/cli/overview) community add-on for [PocketBase](https://pocketbase.io) integration in SvelteKit projects.**
 
 [![npm version](https://img.shields.io/npm/v/@svelbase/sv.svg)](https://www.npmjs.com/package/@svelbase/sv)
-[![license](https://img.shields.io/npm/l/@svelbase/sv.svg)](./LICENSE)
+[![license](https://img.shields.io/npm/l/@svelbase/sv.svg)](./LICENSE.md)
 
 > [!IMPORTANT]
 > Svelte maintainers have not reviewed community add-ons for malicious code. Use at your own discretion.
