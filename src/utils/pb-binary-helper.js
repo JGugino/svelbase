@@ -3,11 +3,12 @@ import { createWriteStream, fsync, unlink } from 'node:fs';
 import { chmod } from 'node:fs/promises';
 import AdmZip from 'adm-zip';
 
-
-
-const POCKETBASE_VERSION = '0.40.1';
-
-function resolveAssetName() {
+/**
+ *
+ * @param {string} pbVersion
+ * @returns {string}
+ */
+function resolveAssetName(pbVersion) {
 	const platform = process.platform; // 'darwin' | 'linux' | 'win32'
 	const arch = process.arch; // 'x64' | 'arm64'
 
@@ -33,17 +34,22 @@ function resolveAssetName() {
 	}
 
 	const ext = platform === 'win32' ? 'zip' : 'zip'; // PocketBase ships .zip on all platforms
-	return `pocketbase_${POCKETBASE_VERSION}_${pf}_${ar}.${ext}`;
+	return `pocketbase_${pbVersion}_${pf}_${ar}.${ext}`;
 }
 
 /**
  *
  * @param {import('./auth-hooks.js').requestCancel} cancel
+ * @param {string} pbVersion
  */
-export async function downloadPocketBaseBinary(cancel) {
-  const assetName = resolveAssetName();
+export async function downloadPocketBaseBinary(cancel, pbVersion) {
+  const assetName = resolveAssetName(pbVersion);
 
-  const url = `https://github.com/pocketbase/pocketbase/releases/download/v${POCKETBASE_VERSION}/${assetName}`;
+  console.log(assetName)
+
+  const url = `https://github.com/pocketbase/pocketbase/releases/download/v${pbVersion}/${assetName}`;
+
+  console.log(url)
 
 	const res = await fetch(url);
 	if (!res.ok) {

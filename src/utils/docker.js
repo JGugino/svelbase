@@ -1,19 +1,20 @@
-const COMPOSE_TEMPLATE = `services:
-  pocketbase:
-    image: ghcr.io/muchobien/pocketbase:latest
-    ports:
-      - "8090:8090"
-    volumes:
-      - ./pb_data:/pb_data
-    restart: unless-stopped
-`;
-
 /**
  *
  * @param {import("sv").SvApi} sv
  *  @param {boolean} overwrite
+ * @param {string} pbVersion
  */
-export async function writeDockerCompose(sv, overwrite) {
+export async function writeDockerCompose(sv, overwrite, pbVersion) {
+  const COMPOSE_TEMPLATE = `services:
+    pocketbase:
+      image: ghcr.io/muchobien/pocketbase:${pbVersion}
+      ports:
+        - "8090:8090"
+      volumes:
+        - ./pb_data:/pb_data
+      restart: unless-stopped
+    `;
+
   sv.file('docker-compose.yml', (existing) => {
     if (existing && existing.trim().length > 0) {
       if (!overwrite) {

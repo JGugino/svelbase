@@ -56,10 +56,7 @@ export default defineAddon({
 
   run: ({ sv, options, cancel }) => {
     //INFO: Sets pocketbase as a runtime dependency
-    sv.dependency("pocketbase", "^0.28.0");
-
-    //INFO: Unzipper used for unzipping the downloaded pocketbase binary
-    // sv.devDependency("adm-zip", "^0.6.0")
+    sv.devDependency("pocketbase", "^0.28.0");
 
     //INFO: Typed client wrapper - src/lib/pocketbase.ts
     const clientOverwrite = /**@type {boolean}*/(options.clientOverwrite)
@@ -84,9 +81,9 @@ export default defineAddon({
     const dockerOverwrite = /**@type {boolean}*/(options.dockerOverwrite)
 
     if (options.pb === "docker") {
-      writeDockerCompose(sv, dockerOverwrite)
+      writeDockerCompose(sv, dockerOverwrite, options.pbVersion)
     } else if (options.pb === "local") {
-      downloadPocketBaseBinary(cancel)
+      downloadPocketBaseBinary(cancel, options.pbVersion)
     }
   },
   nextSteps: ({ options, cwd, packageManager }) => {
